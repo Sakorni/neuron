@@ -41,47 +41,4 @@ namespace NeuralNetwork1.Neuronka
             return res;
         }
     }
-    internal class MatrixSigmoid : MatrixLayer
-    {
-        Matrix lastInput;
-        
-        double alpha = 2.0;
-        public MatrixSigmoid()
-        {
-        }
-
-        private double sigmoid(double x)
-        {
-            return 1 / (1 + Math.Exp(-alpha * x));
-        }
-        public Matrix forward(Matrix x)
-        {
-            lastInput = x;
-            double[,] result = new double[x.n, x.m];
-            for (int i = 0; i < x.n; i++)
-            {
-                for (int j = 0; j < x.m; j++)
-                {
-                    result[i, j] = sigmoid(x.data[i, j]);
-                }
-            }
-            return new Matrix(result);
-        }
-
-        public Matrix backward(Matrix dout, double lr)
-        {
-            Matrix x = lastInput;
-            double[,] result = new double[dout.n, dout.m];
-            for (int i = 0; i < dout.n; i++)
-            {
-                for (int j = 0; j < dout.m; j++)
-                {
-                    result[i, j] = alpha * dout.data[i, j] * sigmoid(x.data[i, j]) * (1 - sigmoid(x.data[i, j]));
-                }
-            }
-            return new Matrix(result);
-        }
-    
-    }
-
 }

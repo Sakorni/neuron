@@ -11,9 +11,4 @@ namespace NeuralNetwork1.Neuronka
         double[] forward(double[] input);
         double[] backward(double[] losses, double learningRate);
     }
-    internal interface MatrixLayer
-    {
-        Matrix forward(Matrix input);
-        Matrix backward(Matrix dout, double learningRate);
-    }
 }

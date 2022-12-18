@@ -38,40 +38,6 @@ namespace NeuralNetwork1.Neuronka
             }
             return new Matrix(res);
         }
-
-        public double[] Sum(int axis)
-        {
-            if (axis == 0)
-            {
-                double[] result = new double[m];
-                for (int i = 0; i < m; i++)
-                {
-                    for (int j = 0; j < n; j++)
-                    {
-                        result[i] += data[j, i];
-                    }
-                }
-                return result;
-            }
-            else if (axis == 1)
-            {
-                double[] result = new double[n];
-                for (int i = 0; i < n; i++)
-                {
-                    for (int j = 0; j < m; j++)
-                    {
-                        result[i] += data[i, j];
-                    }
-                }
-                return result;
-            }
-            else
-            {
-                throw new Exception("Axis must be 0 or 1");
-            }
-        }
-
-
         public static Matrix operator /(Matrix m, double d)
         {
             var res = new double[m.n, m.m];
@@ -92,9 +58,6 @@ namespace NeuralNetwork1.Neuronka
                 double[,] result = new double[a.n, a.m];
                 Parallel.For(0, a.n, i =>
                 {
-
-
-
                     for (int j = 0; j < a.m; j++)
                     {
                         result[i, j] = a.data[i, j] + b[i];
@@ -156,11 +119,13 @@ namespace NeuralNetwork1.Neuronka
         {
             double[,] result = new double[a.n, a.m];
             Parallel.For(0, a.n, i =>
-            { 
+            {
+                
                 for (int j = 0; j < a.m; j++)
                 {
                     result[i, j] = a.data[i, j] * b;
                 }
+                
             });
             return new Matrix(result);
         }
@@ -170,13 +135,15 @@ namespace NeuralNetwork1.Neuronka
             var res = new double[a.n, b.m];
             Parallel.For(0, a.n, i =>
             {
-                Parallel.For(0, b.m, j =>
+                for (var j = 0; j < b.m; j++) 
                 {
+                    var v = 0.0;
                     for (var k = 0; k < b.n; k++)
                     {
-                        res[i, j] += a.data[i, k] * b.data[k, j];
+                        v += a.data[i, k] * b.data[k, j];
                     }
-                });
+                    res[i, j] = v;
+                }
             });
             return new Matrix(res);
         }
@@ -192,11 +159,12 @@ namespace NeuralNetwork1.Neuronka
             Parallel.For(0, b.m, i =>
 
             {
-                result[i] = 0;
+                var v = 0.0;
                 for (int j = 0; j < b.n; j++)
                 {
-                    result[i] += b.data[j, i] * a[j];
+                    v += b.data[j, i] * a[j];
                 }
+                result[i] = v;
             });
             return result;
         }
@@ -209,11 +177,12 @@ namespace NeuralNetwork1.Neuronka
             double[] result = new double[b.n];
             Parallel.For(0, b.n, i =>
             {
-                result[i] = 0;
+                var v = 0.0;
                 for (int j = 0; j < b.m; j++)
                 {
-                    result[i] += b.data[i, j] * a[j];
+                    v += b.data[i, j] * a[j];
                 }
+                result[i] = v;
             });
             return result;
         }

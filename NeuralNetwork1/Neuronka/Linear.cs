@@ -45,7 +45,7 @@ namespace NeuralNetwork1.Neuronka
         {
             var l = new Matrix(losses);
             var x = new Matrix(lastInput);
-            var dx = weights * losses;
+            var dx = losses * weights.Transpose();
             var dw = x.Transpose() * l;
             this.weights -= (dw * learningRate);
             
@@ -67,66 +67,6 @@ namespace NeuralNetwork1.Neuronka
             }
             lastInput= input;
             return t;
-        }
-    }
-    public class LinearMatrix : MatrixLayer
-    {
-        int input_size;
-        int output_size;
-
-        Matrix weights;
-        double[] b;
-        Matrix lastInput;
-        public LinearMatrix(int input_size, int output_size)
-        {
-            this.input_size = input_size;
-            this.output_size = output_size;
-
-            this.b = new double[this.output_size];
-            init_weights();
-        }
-
-        private void init_weights(double lower_bound = -0.005, double upper_bound = 0.005)
-        {
-            Random random = new Random();
-            double[,] w = new double[input_size, output_size];
-            for (int i = 0; i < input_size; i++)
-            {
-                for (int j = 0; j < output_size; j++)
-                {
-                    w[i, j] = random.NextDouble() * (upper_bound - lower_bound) + lower_bound;
-                }
-            }
-
-            for (int i = 0; i < output_size; i++)
-            {
-                b[i] = 0;
-            }
-            weights = new Matrix(w);
-        }
-
-        Matrix MatrixLayer.forward(Matrix x)
-        //returns Wx + b
-        {
-            lastInput = x;
-            return (x * weights) + b;
-        }
-
-        Matrix MatrixLayer.backward(Matrix dout, double lr)
-        {
-            Matrix x = lastInput;
-            double[] db = dout.Sum(0);
-            Matrix dx = dout * weights.Transpose();
-            Matrix dW = x.Transpose() * dout;
-
-            weights = weights - dW * lr;
-
-            for (int i = 0; i < output_size; i++)
-            {
-                b[i] -= db[i] * lr;
-            }
-
-            return dx;
         }
     }
 }
