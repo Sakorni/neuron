@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NeuralNetwork1.Dataset;
+using System;
 
 namespace NeuralNetwork1
 {
@@ -43,7 +44,7 @@ namespace NeuralNetwork1
         /// </summary>
         /// <param name="sample">Фигура, которую необходимо определить</param>
         /// <returns></returns>
-        public FigureType Predict(Sample sample)
+        public MorseWrapper.Morse Predict(Sample sample)
         {
             return sample.ProcessPrediction(Compute(sample.input));
         }

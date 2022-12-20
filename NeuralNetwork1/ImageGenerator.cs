@@ -73,7 +73,7 @@ namespace NeuralNetwork1
                         input[i] += 1;
                         input[200 + j] += 1;
                     }
-            return new Sample(input, FigureCount, type);
+            return new Sample(input, FigureCount, Dataset.MorseWrapper.Morse.UNDEF);
         }
 
         private Point GetLeftUpperPoint()

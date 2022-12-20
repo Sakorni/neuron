@@ -2,19 +2,6 @@
 
 namespace NeuralNetwork1.Neuronka
 {
-
-    public class Simple : Layer
-    {
-        public double[] backward(double[] losses, double learningRate)
-        {
-            return losses;
-        }
-
-        public double[] forward(double[] input)
-        {
-            return input;
-        }
-    }
     public class Linear : Layer
     {
         int inputSize;
@@ -67,6 +54,16 @@ namespace NeuralNetwork1.Neuronka
             }
             lastInput= input;
             return t;
+        }
+
+        public double[,] inners()
+        {
+            throw new NotImplementedException();
+        }
+
+        Layer Layer.FromSave(double[,] data)
+        {
+            throw new NotImplementedException();
         }
     }
 }

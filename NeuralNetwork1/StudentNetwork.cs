@@ -8,7 +8,7 @@ namespace NeuralNetwork1
 {
     public class StudentNetwork : BaseNetwork
     {
-        private double learningRate = 0.01;
+        private double learningRate = 0.1;
         private int trainLimit = 200;
         List<Layer> layers;
 

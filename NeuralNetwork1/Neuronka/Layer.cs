@@ -10,5 +10,9 @@ namespace NeuralNetwork1.Neuronka
     {
         double[] forward(double[] input);
         double[] backward(double[] losses, double learningRate);
+
+        double[,] inners();
+
+        Layer FromSave(double[,] data);
     }
 }

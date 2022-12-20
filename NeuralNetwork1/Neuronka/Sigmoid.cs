@@ -8,7 +8,7 @@ namespace NeuralNetwork1.Neuronka
 {
     internal class Sigmoid : Layer
     {
-        double alpha = 0.7;
+        double alpha = 1;
         double[] lastInput;
         private double activation(double x)
         {
@@ -36,9 +36,19 @@ namespace NeuralNetwork1.Neuronka
             var res = new double[losses.Length];
             for (int i = 0; i < losses.Length; i++)
             {
-                res[i] = alpha *  losses[i] * activationDerivative(x[i]);
+                res[i] = learningRate *  losses[i] * activationDerivative(x[i]);
             }
             return res;
+        }
+
+        public double[,] inners()
+        {
+            return new double[0,0];
+        }
+
+        public Layer FromSave(double[,] data)
+        {
+            return new Sigmoid();
         }
     }
 }

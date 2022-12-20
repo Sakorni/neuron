@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections;
+using Accord.Math;
+using NeuralNetwork1.Dataset;
 
 namespace NeuralNetwork1
 {
@@ -22,27 +24,27 @@ namespace NeuralNetwork1
         /// <summary>
         /// Действительный класс образа. Указывается учителем
         /// </summary>
-        public FigureType actualClass;
+        public MorseWrapper.Morse actualClass;
 
         /// <summary>
         /// Распознанный класс - определяется после обработки
         /// </summary>
-        public FigureType recognizedClass;
+        public MorseWrapper.Morse recognizedClass;
 
         /// <summary>
         /// Конструктор образа - на основе входных данных для сенсоров, при этом можно указать класс образа, или не указывать
         /// </summary>
         /// <param name="inputValues"></param>
         /// <param name="sampleClass"></param>
-        public Sample(double[] inputValues, int classesCount, FigureType sampleClass = FigureType.Undef)
+        public Sample(double[] inputValues, int classesCount, MorseWrapper.Morse sampleClass = MorseWrapper.Morse.UNDEF)
         {
             //  Клонируем массивчик
             input = (double[]) inputValues.Clone();
             Output = new double[classesCount];
-            if (sampleClass != FigureType.Undef) Output[(int) sampleClass] = 1;
+            if (sampleClass != MorseWrapper.Morse.UNDEF) Output[(int) sampleClass] = 1;
 
 
-            recognizedClass = FigureType.Undef;
+            recognizedClass = MorseWrapper.Morse.UNDEF;
             actualClass = sampleClass;
         }
 
@@ -54,7 +56,7 @@ namespace NeuralNetwork1
         /// <summary>
         /// Обработка реакции сети на данный образ на основе вектора выходов сети
         /// </summary>
-        public FigureType ProcessPrediction(double[] neuralOutput)
+        public MorseWrapper.Morse ProcessPrediction(double[] neuralOutput)
         {
             Output = neuralOutput;
             if (error == null)
@@ -65,7 +67,7 @@ namespace NeuralNetwork1
             for (int i = 0; i < Output.Length; ++i)
             {
                 error[i] = (Output[i] - (i == (int) actualClass ? 1 : 0));
-                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = (FigureType) i;
+                if (Output[i] > Output[(int) recognizedClass]) recognizedClass = MorseWrapper.FromInt(i);
             }
 
             return recognizedClass;

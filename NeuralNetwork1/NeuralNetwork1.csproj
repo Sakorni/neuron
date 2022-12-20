@@ -76,6 +76,7 @@
   <ItemGroup>
     <Compile Include="AccordNet.cs" />
     <Compile Include="BaseNetwork.cs" />
+    <Compile Include="Dataset\Processor.cs" />
     <Compile Include="NeuralNetworksStand.cs">
       <SubType>Form</SubType>
     </Compile>
