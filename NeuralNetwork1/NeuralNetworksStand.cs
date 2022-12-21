@@ -207,5 +207,11 @@ namespace NeuralNetwork1
         {
             infoStatusLabel.Text = "Тестировать нейросеть на тестовой выборке такого же размера";
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            Form camera = new Camera.CameraForm();
+            camera.ShowDialog();
+        }
     }
 }

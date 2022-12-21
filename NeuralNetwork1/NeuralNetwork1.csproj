@@ -60,6 +60,21 @@
     <Reference Include="Accord.Statistics, Version=3.8.2.0, Culture=neutral, PublicKeyToken=fa1a88e29555ccf7, processorArchitecture=MSIL">
       <HintPath>..\packages\Accord.Statistics.3.8.2-alpha\lib\net46\Accord.Statistics.dll</HintPath>
     </Reference>
+    <Reference Include="AForge">
+      <HintPath>AForge\AForge.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Imaging">
+      <HintPath>AForge\AForge.Imaging.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Math">
+      <HintPath>AForge\AForge.Math.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video">
+      <HintPath>AForge\AForge.Video.dll</HintPath>
+    </Reference>
+    <Reference Include="AForge.Video.DirectShow">
+      <HintPath>AForge\AForge.Video.DirectShow.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
@@ -76,6 +91,14 @@
   <ItemGroup>
     <Compile Include="AccordNet.cs" />
     <Compile Include="BaseNetwork.cs" />
+    <Compile Include="Camera\CameraForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Camera\CameraForm.Designer.cs">
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Camera\Controller.cs" />
+    <Compile Include="Camera\Processor.cs" />
     <Compile Include="Dataset\Processor.cs" />
     <Compile Include="NeuralNetworksStand.cs">
       <SubType>Form</SubType>
@@ -92,6 +115,9 @@
     <Compile Include="StudentNetwork.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="Camera\CameraForm.resx">
+      <DependentUpon>CameraForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="NeuralNetworksStand.resx">
       <DependentUpon>NeuralNetworksStand.cs</DependentUpon>
     </EmbeddedResource>
@@ -123,6 +149,7 @@
     <None Include="Properties\Title2.png" />
     <None Include="Resources\Title.png" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Accord.3.8.2-alpha\build\Accord.targets" Condition="Exists('..\packages\Accord.3.8.2-alpha\build\Accord.targets')" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
