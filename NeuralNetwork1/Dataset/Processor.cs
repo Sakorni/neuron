@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Accord.Math;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -112,6 +113,7 @@ namespace NeuralNetwork1.Dataset
                     res.AddSample(new Sample(input, SymbolCount, symbol));
                 }
             }
+            res.samples.Shuffle();
             return res;
         }
         private double[] fillInput(Bitmap pic)

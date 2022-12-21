@@ -72,7 +72,11 @@ namespace NeuralNetwork1
 
             label1.Text = "Распознано : " + figure.recognizedClass;
 
-            label8.Text = string.Join("\n", figure.Output.Select(d => d.ToString(CultureInfo.InvariantCulture)));
+            textBox1.Clear();
+            for (int i = 0; i < figure.Output.Length; i++)
+            {
+                textBox1.AppendText($"{i}: {figure.Output[i].ToString(CultureInfo.InvariantCulture)}{Environment.NewLine}");
+            }
             pictureBox1.Image = sampleNBM.Item2;
             pictureBox1.Invalidate();
         }

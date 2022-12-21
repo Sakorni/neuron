@@ -8,7 +8,7 @@ namespace NeuralNetwork1.Neuronka
 {
     internal class Sigmoid : Layer
     {
-        double alpha = 1;
+        double alpha = 0.7;
         double[] lastInput;
         private double activation(double x)
         {

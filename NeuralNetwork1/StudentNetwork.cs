@@ -9,7 +9,7 @@ namespace NeuralNetwork1
 {
     public class StudentNetwork : BaseNetwork
     {
-        private double learningRate = 0.1;
+        private double learningRate = 0.4;
         private int trainLimit = 200;
         List<Layer> layers;
         int[] structure;
@@ -23,7 +23,7 @@ namespace NeuralNetwork1
             for (var i = 0; i < result.Length; i++)
             {
                 totalLoss += Math.Pow((expected[i] - result[i]), 2) / expected.Length;
-                deriv[i] = ((2 * (result[i] - expected[i])) / result.Length);  //  dC / dOut
+                deriv[i] = ((2 * (result[i] - expected[i])) / result.Length * 0.01);  //  dC / dOut
 
             }
             // totalLoss /= expected.Length;
@@ -39,6 +39,7 @@ namespace NeuralNetwork1
                 layers.Add(new Linear(structure[i], structure[i + 1]));
                 layers.Add(new Sigmoid());
             }
+
         }
 
         private double[] forward(double[] input)

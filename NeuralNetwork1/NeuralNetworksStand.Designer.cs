@@ -49,7 +49,6 @@
             this.EpochesCounter = new System.Windows.Forms.NumericUpDown();
             this.TrainingSizeCounter = new System.Windows.Forms.NumericUpDown();
             this.label8 = new System.Windows.Forms.Label();
-            this.label9 = new System.Windows.Forms.Label();
             this.trainOneButton = new System.Windows.Forms.Button();
             this.progressBar1 = new System.Windows.Forms.ProgressBar();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
@@ -60,6 +59,7 @@
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
+            this.textBox1 = new System.Windows.Forms.TextBox();
             label2 = new System.Windows.Forms.Label();
             label4 = new System.Windows.Forms.Label();
             label5 = new System.Windows.Forms.Label();
@@ -213,7 +213,7 @@
             this.netStructureBox.Name = "netStructureBox";
             this.netStructureBox.Size = new System.Drawing.Size(159, 22);
             this.netStructureBox.TabIndex = 18;
-            this.netStructureBox.Text = "300;500;20;2";
+            this.netStructureBox.Text = "300;700;30;2";
             this.netStructureBox.UseWaitCursor = true;
             // 
             // recreateNetButton
@@ -352,16 +352,6 @@
             this.label8.Size = new System.Drawing.Size(0, 16);
             this.label8.TabIndex = 6;
             // 
-            // label9
-            // 
-            this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(696, 452);
-            this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
-            this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(17, 64);
-            this.label9.TabIndex = 7;
-            this.label9.Text = "0:\r\n1:\r\n2:\r\n3:";
-            // 
             // trainOneButton
             // 
             this.trainOneButton.Location = new System.Drawing.Point(685, 582);
@@ -460,11 +450,20 @@
             this.button3.UseVisualStyleBackColor = true;
             this.button3.Click += new System.EventHandler(this.button3_Click_1);
             // 
+            // textBox1
+            // 
+            this.textBox1.Location = new System.Drawing.Point(688, 440);
+            this.textBox1.Multiline = true;
+            this.textBox1.Name = "textBox1";
+            this.textBox1.Size = new System.Drawing.Size(391, 75);
+            this.textBox1.TabIndex = 19;
+            // 
             // NeuralNetworksStand
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1085, 666);
+            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
@@ -474,7 +473,6 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.progressBar1);
             this.Controls.Add(this.trainOneButton);
-            this.Controls.Add(this.label9);
             this.Controls.Add(this.label8);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
@@ -507,7 +505,6 @@
         private System.Windows.Forms.NumericUpDown EpochesCounter;
         private System.Windows.Forms.TrackBar AccuracyCounter;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Button recreateNetButton;
         private System.Windows.Forms.NumericUpDown classCounter;
         private System.Windows.Forms.Label label10;
@@ -527,6 +524,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.TextBox textBox1;
     }
 }
 
