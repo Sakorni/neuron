@@ -145,7 +145,7 @@ namespace NeuralNetwork1
         {
             //  Проверяем корректность задания структуры сети
             int[] structure = CurrentNetworkStructure();
-            if (structure.Length < 2 || structure[0] != 200 ||
+            if (structure.Length < 2 || structure[0] != 300 ||
                 structure[structure.Length - 1] != processor.SymbolCount)
             {
                 MessageBox.Show(
@@ -212,6 +212,20 @@ namespace NeuralNetwork1
         {
             Form camera = new Camera.CameraForm();
             camera.ShowDialog();
+        }
+
+        private void button2_Click_1(object sender, EventArgs e)
+        {
+            Net.Backup();
+            MessageBox.Show(
+                   "Произошёл успешный бэкап","Backup", MessageBoxButtons.OK);
+        }
+
+        private void button3_Click_1(object sender, EventArgs e)
+        {
+            Net.LoadBackup();
+            MessageBox.Show(
+                   "Успешно загрузили бэкап", "Backup", MessageBoxButtons.OK);
         }
     }
 }

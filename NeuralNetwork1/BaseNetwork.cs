@@ -59,5 +59,13 @@ namespace NeuralNetwork1
         {
             TrainProgress?.Invoke(progress, error, time);
         }
+        public virtual void Backup()
+        {
+            return;
+        }
+        public virtual void LoadBackup()
+        {
+            return;
+        }
     }
 }

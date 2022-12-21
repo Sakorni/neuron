@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace NeuralNetwork1
 {
@@ -11,6 +12,9 @@ namespace NeuralNetwork1
         private double learningRate = 0.1;
         private int trainLimit = 200;
         List<Layer> layers;
+        int[] structure;
+        string backupFile = "..\\..\\backup.txt";
+
 
         private double[] LossFunction(double[] result, double[] expected, out double totalLoss)
         {
@@ -28,6 +32,7 @@ namespace NeuralNetwork1
 
         public StudentNetwork(int[] structure)
         {
+            this.structure = structure;
             layers = new List<Layer>();
             for (int i = 0; i < structure.Length - 1; i++)
             {
@@ -121,6 +126,56 @@ namespace NeuralNetwork1
         protected override double[] Compute(double[] input)
         {
             return forward(input);
+        }
+        override public void Backup() 
+        {
+            using (StreamWriter writer = new StreamWriter(backupFile))
+            {
+                writer.WriteLine(string.Join(";",structure.Select(f => f.ToString())));
+                foreach(var layer in layers)
+                {
+                    var data = layer.inners();
+                    if(data.Length == 0)
+                    {
+                        continue;
+                    }
+                    for(int i = 0; i < data.GetLength(0); i++)
+                    {
+                        for (int j = 0; j < data.GetLength(1); j++)
+                        {
+                            writer.Write(data[i, j]);
+                            if( j+1 < data.GetLength(1))
+                                writer.Write(" ");
+                        }
+                        writer.WriteLine();
+                    }
+                }
+            }
+        }
+        override public void LoadBackup()
+        {
+            using (StreamReader reader = new StreamReader(backupFile))
+            {
+                structure = reader.ReadLine().Split(';').Select(f => int.Parse(f)).ToArray();
+                var layersCount = structure.Length;
+                var layers = new List<Layer>();
+                for(int i = 0; i < layersCount-2; i++)
+                {
+                    var n = structure[i];
+                    var m = structure[i + 1];
+                    var data = new double[n, m];
+                    for (int x = 0; x < n; x++)
+                    {
+                        var line = reader.ReadLine().Split(' ');
+                        for (int y = 0; y < m; y++)
+                        {
+                            data[x, y] = double.Parse(line[y]);
+                        }
+                        layers.Add(new Linear(data));
+                        layers.Add(new Sigmoid());
+                    }
+                }
+            }
         }
 
     }
