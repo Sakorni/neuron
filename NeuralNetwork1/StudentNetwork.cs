@@ -159,10 +159,10 @@ namespace NeuralNetwork1
             {
                 structure = reader.ReadLine().Split(';').Select(f => int.Parse(f)).ToArray();
                 var layersCount = structure.Length;
-                var layers = new List<Layer>();
-                for(int i = 0; i < layersCount-2; i++)
+                layers = new List<Layer>();
+                for(int i = 0; i < layersCount-1; i++)
                 {
-                    var n = structure[i];
+                    var n = structure[i] + 1;
                     var m = structure[i + 1];
                     var data = new double[n, m];
                     for (int x = 0; x < n; x++)

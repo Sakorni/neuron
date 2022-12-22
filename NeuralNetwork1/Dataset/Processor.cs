@@ -1,14 +1,11 @@
 ﻿using Accord.Math;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using NeuralNetwork1.ImageProcessor;
 using static NeuralNetwork1.Dataset.MorseWrapper;
-
 namespace NeuralNetwork1.Dataset
 {
     public class MorseWrapper {
@@ -69,8 +66,8 @@ namespace NeuralNetwork1.Dataset
 
     public class Processor
     {
-        
 
+        NeuralNetwork1.ImageProcessor.Processor imgProcessor;
         /// <summary>
         /// Рандом нужен нам для того, чтобы избежать ситуации, когда часть сэмплов мы игнорируем
         /// </summary>
@@ -89,6 +86,7 @@ namespace NeuralNetwork1.Dataset
         /// </summary>
         public Processor()
         {
+            imgProcessor = new ImageProcessor.Processor();
             rnd = new Random();
             samples = new Dictionary<Morse, List<Bitmap>>();
             for (int i = 0; i < 10; i++)
@@ -118,22 +116,7 @@ namespace NeuralNetwork1.Dataset
         }
         private double[] fillInput(Bitmap pic)
         {
-            double[] input = new double[PictureSize];
-            var half = PictureSize / 2;
-            for (int x = 0; x < PictureSize; x++)
-            {
-                for (int y = 0; y < PictureSize; y++)
-                {
-                    if (pic.GetPixel(x, y).ToArgb() == Color.White.ToArgb())
-                    {
-                        continue;
-                    }
-                    input[x]++; // Логика в том, что морзянка идёт "в ширь", т.е. мы можем подсчитать, сколько "колонн" заполнено
-                    //input[half + y]++;
-                }
-            }
-            return input;
-
+            return imgProcessor.processImage(pic);
         }
 
 

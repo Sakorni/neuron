@@ -31,8 +31,8 @@ namespace NeuralNetwork1.ImageProcessor
             threshldFilter.ApplyInPlace(uProcessed);
 
             AForge.Imaging.BlobCounter blobber = new AForge.Imaging.BlobCounter();
-            blobber.MinHeight = 5;
-            blobber.MinWidth = 5;
+            blobber.MinHeight = 2;
+            blobber.MinWidth = 2;
             blobber.ObjectsOrder = AForge.Imaging.ObjectsOrder.XY;
 
             // Инвертируем 
@@ -41,14 +41,13 @@ namespace NeuralNetwork1.ImageProcessor
 
             blobber.ProcessImage(uProcessed);
             var rects = blobber.GetObjectsRectangles();
-            double scaleFactor = rects.Max(x => x.Width);
-            var res = rects.Take(maxMorseSignParts).Select(x => x.Width / scaleFactor).Where(x => x > 0.1).ToList();
+            var res = rects.Take(maxMorseSignParts).Select(x => x.Width * 1.0).ToList();
             while (res.Count < maxMorseSignParts)
             {
                 res.Add(0);
             }
 
-            return res.Select(x => x * scaleFactor).ToArray();
+            return res.ToArray();
         }
     }
 }

@@ -127,6 +127,7 @@
     <Compile Include="Camera\Controller.cs" />
     <Compile Include="Camera\Processor.cs" />
     <Compile Include="Dataset\Processor.cs" />
+    <Compile Include="ImageProcessor\Processor.cs" />
     <Compile Include="NeuralNetworksStand.cs">
       <SubType>Form</SubType>
     </Compile>
