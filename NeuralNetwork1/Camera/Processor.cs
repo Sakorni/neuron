@@ -128,10 +128,10 @@ namespace AForge.WindowsForms
 
 
             //  Масштабируем изображение до 500x500 - этого достаточно
-            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(settings.orignalDesiredSize.Width, settings.orignalDesiredSize.Height);
+            /*AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(settings.orignalDesiredSize.Width, settings.orignalDesiredSize.Height);
             uProcessed = scaleFilter.Apply(uProcessed);
             original = scaleFilter.Apply(original);
-            g = Graphics.FromImage(original);
+            g = Graphics.FromImage(original);*/
             //  Пороговый фильтр применяем. Величина порога берётся из настроек, и меняется на форме
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
             threshldFilter.PixelBrightnessDifferenceLimit = settings.differenceLim;
@@ -181,10 +181,10 @@ namespace AForge.WindowsForms
             AForge.Imaging.BlobCounterBase bc = new AForge.Imaging.BlobCounter();
 
             bc.FilterBlobs = true;
-            bc.MinWidth = 3;
-            bc.MinHeight = 3;
+            bc.MinWidth = 3; // TODO 5
+            bc.MinHeight = 3; // TODO toje
             // Упорядочиваем по размеру
-            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
+            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size; // TODO XY
             // Обрабатываем картинку
             
             bc.ProcessImage(unmanaged);

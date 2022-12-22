@@ -81,7 +81,7 @@ namespace NeuralNetwork1.Dataset
         /// </summary>
         private Dictionary<Morse, List<Bitmap>> samples;
 
-        public int PictureSize = 300;
+        public int PictureSize = 200;
         public int SymbolCount = 2;
 
         /// <summary>
