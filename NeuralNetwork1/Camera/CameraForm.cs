@@ -13,11 +13,15 @@ using System.Windows.Forms;
 using AForge.WindowsForms;
 using AForge.Video;
 using AForge.Video.DirectShow;
+using NeuralNetwork1.Dataset;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.Button;
+using NeuralNetwork1.Properties;
 
 namespace NeuralNetwork1.Camera
 {
     delegate void FormUpdateDelegate();
-    public partial class CameraForm : Form
+
+    public partial class MainForm : Form
     {
         /// <summary>
         /// Класс, реализующий всю логику работы
@@ -66,7 +70,6 @@ namespace NeuralNetwork1.Camera
             sw.Stop();
             ticksLabel.Text = "Тики : " + sw.Elapsed.ToString();
             originalImageBox.Image = controller.GetOriginalImage();
-            processedImgBox.Image = controller.GetProcessedImage();
         }
 
         /// <summary>
@@ -78,9 +81,10 @@ namespace NeuralNetwork1.Camera
             UpdateFormFields();
             return;
         }
-
-        public CameraForm()
+        BaseNetwork net;
+        public MainForm(BaseNetwork net)
         {
+            this.net = net;
             InitializeComponent();
             // Список камер получаем
             videoDevicesList = new FilterInfoCollection(FilterCategory.VideoInputDevice);
@@ -203,6 +207,71 @@ namespace NeuralNetwork1.Camera
         private void checkBox1_CheckedChanged(object sender, EventArgs e)
         {
             controller.settings.processImg = checkBox1.Checked;
+        }
+
+        private void originalImageBox_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void ProcessButton_Click(object sender, EventArgs e)
+        {
+            var original = (Bitmap)controller.GetOriginalImage().Clone();
+            // А НЕЧЕГО В КРАЙ (краснодарский (это по словам Михаила, он еще посмеялся так неприятно))СУВАТЬ МОРЗЯНКУ
+            int xborder = original.Width / 10;
+            int yborder = original.Height / 10;
+            //Rectangle cropRect = new Rectangle(xborder, yborder, original.Width - xborder, original.Height - yborder);
+            Rectangle cropRect = new Rectangle(0, 0, original.Width, original.Height);
+
+            //  Теперь всю эту муть пилим в обработанное изображение
+            AForge.Imaging.Filters.Crop cropFilter = new AForge.Imaging.Filters.Crop(cropRect);
+            var uProcessed = cropFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
+            AForge.Imaging.Filters.Grayscale grayFilter = new AForge.Imaging.Filters.Grayscale(0.2125, 0.7154, 0.0721);
+            uProcessed = grayFilter.Apply(uProcessed);
+
+            //  Пороговый фильтр применяем. Величина порога берётся из настроек, и меняется на форме
+            // Нет не меняется. Здесь мы "выдавливаем" изображение.
+            AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
+            threshldFilter.PixelBrightnessDifferenceLimit = 0.13f;
+            threshldFilter.ApplyInPlace(uProcessed);
+
+            AForge.Imaging.BlobCounter blobber = new AForge.Imaging.BlobCounter();
+            var minHeight = 2;
+            var minWidth = 2;
+            var maxHeight = original.Height - 30;
+            var maxWidth = original.Width - 30;
+            blobber.ObjectsOrder = AForge.Imaging.ObjectsOrder.XY;
+            // Инвертируем 
+            AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
+            InvertFilter.ApplyInPlace(uProcessed);
+            blobber.ProcessImage(uProcessed);
+            var rects = blobber.GetObjectsRectangles().Where(
+                x => minHeight < x.Height && x.Height < maxHeight &&
+                minWidth < x.Width && x.Width < maxWidth).ToArray();
+            var maxRectWidth = rects.Max(x => x.Width);
+            var maxRectWidthY = rects.Where(x => x.Width == maxRectWidth).First().Y;
+            var res = rects.Where(x => Math.Abs(maxRectWidthY - x.Y) < 30).Take(5).Select(x => x.Width * 1.0).ToList();
+            while (res.Count < 5)
+            {
+                res.Add(0);
+            }
+
+            var resImg = original;
+            Graphics g = Graphics.FromImage(original);
+            Pen p = new Pen(Color.Red);
+            p.Width = 1;
+            g.DrawRectangles(p, rects);
+
+            processedImgBox.Image = resImg;
+            
+        }
+
+        private void PlayButton_Click(object sender, EventArgs e)
+        {
+            var pr = new NeuralNetwork1.ImageProcessor.Processor();
+            var prikol = pr.processImage((Bitmap)controller.GetOriginalImage().Clone());
+            var punchline = net.Predict(new Sample(prikol, 10));
+            MessageBox.Show(MorseWrapper.MorseToString(punchline), "HAHA", MessageBoxButtons.OK);
         }
     }
 }

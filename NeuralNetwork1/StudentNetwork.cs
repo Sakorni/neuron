@@ -160,7 +160,7 @@ namespace NeuralNetwork1
                 structure = reader.ReadLine().Split(';').Select(f => int.Parse(f)).ToArray();
                 var layersCount = structure.Length;
                 layers = new List<Layer>();
-                for(int i = 0; i < layersCount-1; i++)
+                for (int i = 0; i < layersCount - 1; i++)
                 {
                     var n = structure[i] + 1;
                     var m = structure[i + 1];
@@ -172,9 +172,9 @@ namespace NeuralNetwork1
                         {
                             data[x, y] = double.Parse(line[y]);
                         }
-                        layers.Add(new Linear(data));
-                        layers.Add(new Sigmoid());
                     }
+                    layers.Add(new Linear(data));
+                    layers.Add(new Sigmoid());
                 }
             }
         }

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
-
-namespace AForge.WindowsForms
+using AForge;
+namespace NeuralNetwork1.Camera
 {
     internal class Settings
     {
@@ -27,7 +27,7 @@ namespace AForge.WindowsForms
 
         public int width = 640;
         public int height = 640;
-        
+
         /// <summary>
         /// Размер сетки для сенсоров по горизонтали
         /// </summary>
@@ -98,16 +98,16 @@ namespace AForge.WindowsForms
             //  Отпиливаем границы, но не более половины изображения
             if (side < 4 * settings.border) settings.border = side / 4;
             side -= 2 * settings.border;
-            
+
             //  Мы сейчас занимаемся тем, что красиво оформляем входной кадр, чтобы вывести его на форму
             Rectangle cropRect = new Rectangle((bitmap.Width - bitmap.Height) / 2 + settings.left + settings.border, settings.top + settings.border, side, side);
-            
+
             //  Тут создаём новый битмапчик, который будет исходным изображением
             original = new Bitmap(cropRect.Width, cropRect.Height);
 
             //  Объект для рисования создаём
             Graphics g = Graphics.FromImage(original);
-            
+
             g.DrawImage(bitmap, new Rectangle(0, 0, original.Width, original.Height), cropRect, GraphicsUnit.Pixel);
             Pen p = new Pen(Color.Red);
             p.Width = 1;
@@ -116,22 +116,21 @@ namespace AForge.WindowsForms
             AForge.Imaging.Filters.Grayscale grayFilter = new AForge.Imaging.Filters.Grayscale(0.2125, 0.7154, 0.0721);
             var uProcessed = grayFilter.Apply(AForge.Imaging.UnmanagedImage.FromManagedImage(original));
 
-            
+
             int blockWidth = original.Width / settings.blocksCount;
             int blockHeight = original.Height / settings.blocksCount;
             for (int r = 0; r < settings.blocksCount; ++r)
                 for (int c = 0; c < settings.blocksCount; ++c)
                 {
                     //  Тут ещё обработку сделать
-                    g.DrawRectangle(p, new Rectangle(c * blockWidth, r * blockHeight, blockWidth, blockHeight));
+                    //g.DrawRectangle(p, new Rectangle(c * blockWidth, r * blockHeight, blockWidth, blockHeight));
                 }
 
-
             //  Масштабируем изображение до 500x500 - этого достаточно
-            /*AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(settings.orignalDesiredSize.Width, settings.orignalDesiredSize.Height);
+            AForge.Imaging.Filters.ResizeBilinear scaleFilter = new AForge.Imaging.Filters.ResizeBilinear(settings.orignalDesiredSize.Width, settings.orignalDesiredSize.Height);
             uProcessed = scaleFilter.Apply(uProcessed);
             original = scaleFilter.Apply(original);
-            g = Graphics.FromImage(original);*/
+            g = Graphics.FromImage(original);
             //  Пороговый фильтр применяем. Величина порога берётся из настроек, и меняется на форме
             AForge.Imaging.Filters.BradleyLocalThresholding threshldFilter = new AForge.Imaging.Filters.BradleyLocalThresholding();
             threshldFilter.PixelBrightnessDifferenceLimit = settings.differenceLim;
@@ -140,25 +139,13 @@ namespace AForge.WindowsForms
 
             if (settings.processImg)
             {
-             
+
                 string info = processSample(ref uProcessed);
                 Font f = new Font(FontFamily.GenericSansSerif, 20);
                 g.DrawString(info, f, Brushes.Black, 30, 30);
             }
 
-            //  Получить значения сенсоров из обработанного изображения размера 100x100
-
-            //  Можно вывести информацию на изображение!
-            //Font f = new Font(FontFamily.GenericSansSerif, 10);
-            //for (int r = 0; r < 4; ++r)
-            //    for (int c = 0; c < 4; ++c)
-            //        if (currentDeskState[r * 4 + c] >= 1 && currentDeskState[r * 4 + c] <= 16)
-            //        {
-            //            int num = 1 << currentDeskState[r * 4 + c];
-            //            
-            //        }
-
-
+            
             processed = uProcessed.ToManagedImage();
 
             return true;
@@ -168,7 +155,7 @@ namespace AForge.WindowsForms
         /// Обработка одного сэмпла
         /// </summary>
         /// <param name="index"></param>
-        private string processSample(ref Imaging.UnmanagedImage unmanaged)
+        private string processSample(ref AForge.Imaging.UnmanagedImage unmanaged)
         {
             string rez = "Обработка";
 
@@ -181,12 +168,12 @@ namespace AForge.WindowsForms
             AForge.Imaging.BlobCounterBase bc = new AForge.Imaging.BlobCounter();
 
             bc.FilterBlobs = true;
-            bc.MinWidth = 3; // TODO 5
-            bc.MinHeight = 3; // TODO toje
+            bc.MinWidth = 3;
+            bc.MinHeight = 3;
             // Упорядочиваем по размеру
-            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size; // TODO XY
+            bc.ObjectsOrder = AForge.Imaging.ObjectsOrder.Size;
             // Обрабатываем картинку
-            
+
             bc.ProcessImage(unmanaged);
 
             Rectangle[] rects = bc.GetObjectsRectangles();
@@ -225,4 +212,3 @@ namespace AForge.WindowsForms
 
     }
 }
-

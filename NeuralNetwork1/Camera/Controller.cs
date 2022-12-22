@@ -83,8 +83,10 @@ namespace AForge.WindowsForms
             if (!Ready) return false;
             _imageProcessed = false;
 
+            // ALERT!!! Тут заменил, пометка на случай взрыва
+            //
             bool processResult = await Task.Run(() => processor.ProcessImage(image));
-
+            //processor.original = image;
             //  Более того, проверяем, не сдох ли султан, пока мы ишака дрессировали
             if (!workNeeded) return false;
 

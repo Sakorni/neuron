@@ -30,18 +30,26 @@ namespace NeuralNetwork1.ImageProcessor
             threshldFilter.PixelBrightnessDifferenceLimit = 0.13f;
             threshldFilter.ApplyInPlace(uProcessed);
 
+            return blobImage(uProcessed.ToManagedImage());
+        }
+        public double[] blobImage(Bitmap uProcessed)
+        {
             AForge.Imaging.BlobCounter blobber = new AForge.Imaging.BlobCounter();
-            blobber.MinHeight = 2;
-            blobber.MinWidth = 2;
+            var minHeight = 2;
+            var minWidth = 2;
+            var maxHeight = uProcessed.Height - 30;
+            var maxWidth = uProcessed.Width - 30;
             blobber.ObjectsOrder = AForge.Imaging.ObjectsOrder.XY;
-
             // Инвертируем 
             AForge.Imaging.Filters.Invert InvertFilter = new AForge.Imaging.Filters.Invert();
             InvertFilter.ApplyInPlace(uProcessed);
-
             blobber.ProcessImage(uProcessed);
-            var rects = blobber.GetObjectsRectangles();
-            var res = rects.Take(maxMorseSignParts).Select(x => x.Width * 1.0).ToList();
+            var rects = blobber.GetObjectsRectangles().Where(
+                x => minHeight < x.Height && x.Height < maxHeight &&
+                minWidth < x.Width && x.Width < maxWidth).ToArray();
+            var maxRectWidth = rects.Max(x => x.Width);
+            var maxRectWidthY = rects.Where(x => x.Width == maxRectWidth).First().Y;
+            var res = rects.Where(x => Math.Abs(maxRectWidthY - x.Y) < 30).Take(5).Select(x => x.Width * 1.0).ToList();
             while (res.Count < maxMorseSignParts)
             {
                 res.Add(0);

@@ -1,6 +1,6 @@
 ﻿namespace NeuralNetwork1.Camera
 {
-    partial class CameraForm
+    partial class MainForm
     {
         /// <summary>
         /// Required designer variable.
@@ -36,6 +36,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.processedImgBox = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tresholdTrackBar = new System.Windows.Forms.TrackBar();
             this.label4 = new System.Windows.Forms.Label();
@@ -48,7 +49,6 @@
             this.ProcessButton = new System.Windows.Forms.Button();
             this.PlayButton = new System.Windows.Forms.Button();
             this.resolutionsBox = new System.Windows.Forms.ComboBox();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.originalImageBox)).BeginInit();
             this.panel1.SuspendLayout();
@@ -143,6 +143,17 @@
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(442, 202);
             this.panel2.TabIndex = 18;
+            // 
+            // checkBox1
+            // 
+            this.checkBox1.AutoSize = true;
+            this.checkBox1.Location = new System.Drawing.Point(174, 91);
+            this.checkBox1.Name = "checkBox1";
+            this.checkBox1.Size = new System.Drawing.Size(86, 17);
+            this.checkBox1.TabIndex = 24;
+            this.checkBox1.Text = "Обработать";
+            this.checkBox1.UseVisualStyleBackColor = true;
+            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // label2
             // 
@@ -247,6 +258,7 @@
             this.ProcessButton.TabIndex = 26;
             this.ProcessButton.Text = "Обработать";
             this.ProcessButton.UseVisualStyleBackColor = true;
+            this.ProcessButton.Click += new System.EventHandler(this.ProcessButton_Click);
             // 
             // PlayButton
             // 
@@ -258,6 +270,7 @@
             this.PlayButton.TabIndex = 25;
             this.PlayButton.Text = "Играть";
             this.PlayButton.UseVisualStyleBackColor = true;
+            this.PlayButton.Click += new System.EventHandler(this.PlayButton_Click);
             // 
             // resolutionsBox
             // 
@@ -268,17 +281,6 @@
             this.resolutionsBox.Name = "resolutionsBox";
             this.resolutionsBox.Size = new System.Drawing.Size(218, 21);
             this.resolutionsBox.TabIndex = 34;
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(174, 91);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(86, 17);
-            this.checkBox1.TabIndex = 24;
-            this.checkBox1.Text = "Обработать";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
             // MainForm
             // 
